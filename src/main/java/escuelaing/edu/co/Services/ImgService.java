@@ -18,7 +18,7 @@ public class ImgService implements MainServiceInterface {
     public String GetResponse() {
         String body = "";
         try{
-            Path file = new File("").toPath();
+            Path file = new File("src/main/java/resources/download.jpg").toPath();
             body = Files.probeContentType(file);
         } catch (IOException e) {
             e.printStackTrace();

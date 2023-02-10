@@ -20,7 +20,7 @@ public class HttpServer {
     public static HttpServer getInstance() {
         return instance;
     }
- public static void main(String[] args) throws IOException {
+ public void main(String[] args) throws IOException {
          ServerSocket serverSocket = null;
         try {
              serverSocket = new ServerSocket(35000);
@@ -43,8 +43,14 @@ public class HttpServer {
             BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             String inputLine, outputLine;
             String pelicula = "";
+            String service = "";
+            Boolean flag = true;
             while ((inputLine = in.readLine()) != null) {
                 System.out.println("Received: " + inputLine);
+                if(flag){
+                    service = inputLine.split(" ")[1];
+                    flag = false;
+                }
                 if (inputLine.contains("pelicula?nombre")) {
                     String[] cadena = inputLine.split("=");
                     pelicula = (cadena[1].split("HTTP"))[0];
@@ -53,7 +59,10 @@ public class HttpServer {
                     break;
                 }
             }
-            if (!Objects.equals(pelicula, "")) {
+            if(service.startsWith("/apps/")){
+                outputLine = ChooseService(service.substring(5));
+            }
+            else if (!Objects.equals(pelicula, "")) {
                 outputLine = "HTTP/1.1 200 OK\r\n"
                         + "Content-Type: application/json\r\n"
                         + "\r\n" +
@@ -123,7 +132,10 @@ public class HttpServer {
      return table;
     }
 
-
+    private String ChooseService(String Name){
+        MainServiceInterface response = services.get(Name);
+        return response.GetHeader() + response.GetResponse();
+    }
 
     public void Services(String s, MainServiceInterface mainService) {
         services.put(s, mainService);

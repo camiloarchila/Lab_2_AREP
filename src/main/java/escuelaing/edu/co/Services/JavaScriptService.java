@@ -17,7 +17,7 @@ public class JavaScriptService implements MainServiceInterface {
     public String GetResponse() {
         byte[] body = new byte[0];
         try{
-            Path file = Paths.get("");
+            Path file = Paths.get("src/main/java/resources/JsFile.js");
             body = Files.readAllBytes(file);
         } catch (IOException e) {
             e.printStackTrace();

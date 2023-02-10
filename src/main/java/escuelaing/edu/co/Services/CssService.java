@@ -19,7 +19,7 @@ public class CssService implements MainServiceInterface {
     public String GetResponse() {
         byte[] body = new byte[0];
         try{
-            Path file = Paths.get("");
+            Path file = Paths.get("src/main/java/resources/CssFile.css");
             body = Files.readAllBytes(file);
         } catch (IOException e) {
             e.printStackTrace();
